@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Cloud-Hotel-Project</string>
+    <string name="signin_signup">Sign In or Sign up here</string>
+    <string name="add_new_room">Add new Room</string>
+    <string name="manage_rooms">Manage Rooms</string>
+    <string name="manage_users">Manage Users</string>
+    <string name="manage_reviews">Manage Reviews</string>
+    <string name="room_number">Room Number</string>
+    <string name="add_room">Add Room</string>
+    <string name="room_price">Room Price</string>
+    <string name="click_to_add_room_picture">Click to add room picture</string>
+    <string name="manage_room">Manage</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+</resources>

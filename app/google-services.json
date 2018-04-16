@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "183772242483",
+    "firebase_url": "https://cloud-hotel-project.firebaseio.com",
+    "project_id": "cloud-hotel-project",
+    "storage_bucket": "cloud-hotel-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183772242483:android:427f207b940fd4e0",
+        "android_client_info": {
+          "package_name": "com.example.masroor.cloud_hotel_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183772242483-a37uq5ddbcdgtnufnvbelrrvaudktmvg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.masroor.cloud_hotel_project",
+            "certificate_hash": "87e2a115b2af41d20ffebc9f3afd3285da63f76e"
+          }
+        },
+        {
+          "client_id": "183772242483-4pojqftj2240jd92qsi851r1h4usaevs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDax8Oe5XhXiCwDb6knCbp9VcWMjXVuPJo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183772242483-4pojqftj2240jd92qsi851r1h4usaevs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
