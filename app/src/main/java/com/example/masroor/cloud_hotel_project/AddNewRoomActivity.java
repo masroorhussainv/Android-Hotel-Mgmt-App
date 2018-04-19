@@ -32,7 +32,7 @@ public class AddNewRoomActivity extends AppCompatActivity {
     final int RC_PICK_PHOTO=2;
 
     ImageView imageView;
-    EditText editText_room_num,editText_room_price;
+    EditText editText_room_num,editText_room_price,editText_room_capacity;
     Button btn_add_room;
     Uri imageUri;
 
@@ -53,6 +53,7 @@ public class AddNewRoomActivity extends AppCompatActivity {
         imageView=findViewById(R.id.imageView);
         editText_room_num=findViewById(R.id.editText_room_num);
         editText_room_price=findViewById(R.id.editText_room_price);
+        editText_room_capacity=findViewById(R.id.editText_room_capacity);
         btn_add_room=findViewById(R.id.button_add_room);
 
         firebaseStorage=FirebaseStorage.getInstance();
@@ -95,6 +96,12 @@ public class AddNewRoomActivity extends AppCompatActivity {
         }else{
             editText_room_price.setError(null);
         }
+        if(TextUtils.isEmpty(editText_room_capacity.getText())){
+            editText_room_capacity.setError("Enter Room Capacity");
+            return false;
+        }else{
+            editText_room_price.setError(null);
+        }
         if(imageUri==null){
             Toast.makeText(this,"Please choose an image for New Room!",Toast.LENGTH_SHORT).show();
             return false;
@@ -111,10 +118,12 @@ public class AddNewRoomActivity extends AppCompatActivity {
         //get data from edit text fields
         String roomNumber = editText_room_num.getText().toString();
         int roomPrice = Integer.parseInt(editText_room_price.getText().toString());
+        int roomCapacity=Integer.parseInt(editText_room_capacity.getText().toString());
+
 
         String current_user_id=FirebaseAuth.getInstance().getCurrentUser().getUid();
         String current_user_name=FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        RoomModel room=new RoomModel(roomNumber,roomPrice,true,current_user_id,current_user_name);
+        RoomModel room=new RoomModel(roomNumber,roomPrice,true,roomCapacity,current_user_id,current_user_name);
 
         dbRef_Rooms=firebaseDatabase.getReference("Rooms");
         dbRef_Rooms.child(roomNumber).setValue(room);

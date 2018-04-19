@@ -17,4 +17,12 @@
         <item name="android:layout_marginLeft">24dp</item>
         <item name="android:layout_marginRight">24dp</item>
     </style>
+
+    <style name="button_style.critical">
+        <item name="android:background">@color/critical</item>
+    </style>
+
+    <style name="button_style.elevated">
+        <item name="android:background">@color/elevated</item>
+    </style>
 </resources>

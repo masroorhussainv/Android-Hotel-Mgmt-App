@@ -12,4 +12,10 @@
     <string name="manage_room">Manage</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
+    <string name="available">Available</string>
+    <string name="yes">Yes</string>
+    <string name="add_another_picture">Add Another Picture</string>
+    <string name="room_capacity">Room Capacity</string>
+    <string name="update_room_details">Update Room Details</string>
+    <string name="delete_room">Delete Room</string>
 </resources>

@@ -1,6 +1,12 @@
 package models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class RoomModel {
 
@@ -9,15 +15,24 @@ public class RoomModel {
     private boolean room_available;
     private String booked_by_uid;
     private String booked_by_name;
+    private int room_capacity;
+
+    public int getRoom_capacity() {
+        return room_capacity;
+    }
+
+    public void setRoom_capacity(int room_capacity) {
+        this.room_capacity = room_capacity;
+    }
 
 
-
-    public RoomModel(String room_number, int price, boolean room_available, String booked_by_uid, String booked_by_name) {
+    public RoomModel(String room_number, int price, boolean room_available,int cap, String booked_by_uid, String booked_by_name) {
         this.room_number = room_number;
         this.room_price = price;
         this.room_available = room_available;
         this.booked_by_uid = booked_by_uid;
         this.booked_by_name = booked_by_name;
+        this.room_capacity=cap;
     }
 
     public RoomModel() {
@@ -62,4 +77,6 @@ public class RoomModel {
     public void setBooked_by_name(String booked_by_name) {
         this.booked_by_name = booked_by_name;
     }
+
+
 }

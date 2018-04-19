@@ -18,11 +18,12 @@
         </activity>
         <activity
             android:name=".AdminMainActivity"
-            android:label="Admin"></activity>
+            android:label="Admin" />
         <activity
             android:name=".AddNewRoomActivity"
-            android:label="Add New Room"></activity>
-        <activity android:name=".ManageRoomsActivity"></activity>
+            android:label="Add New Room" />
+        <activity android:name=".ManageRoomsActivity" />
+        <activity android:name=".ManageSingleRoomActivity" />
     </application>
 
 </manifest>

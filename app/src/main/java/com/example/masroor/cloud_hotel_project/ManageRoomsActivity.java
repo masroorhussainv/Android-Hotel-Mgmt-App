@@ -1,5 +1,6 @@
 package com.example.masroor.cloud_hotel_project;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -20,18 +23,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 
-import java.util.ArrayList;
 
 import models.RoomModel;
 import viewholders.ManageRoomViewHolder;
 
 public class ManageRoomsActivity extends AppCompatActivity {
 
+    public static final String KEYS = "KEYS";
+    public static final String ROOM_NUMBER = "room_number";
+    public static final String ROOM_PRICE = "room_price";
+    public static final String AVAILABLE = "available";
     RecyclerView rv;
 
     private DatabaseReference dbRef_Rooms;
     private ChildEventListener roomsChildEventListener;
-    private ArrayList<RoomModel> rooms_list;
     private FirebaseRecyclerAdapter<RoomModel, ManageRoomViewHolder> adapter;
 
 
@@ -48,14 +53,13 @@ public class ManageRoomsActivity extends AppCompatActivity {
 
         rv=findViewById(R.id.recyclerView);
         dbRef_Rooms=FirebaseDatabase.getInstance().getReference("Rooms");
-        rooms_list=new ArrayList<>();
 
         roomsChildEventListener=new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 RoomModel room=dataSnapshot.getValue(RoomModel.class);
+                assert room != null;
                 Log.i("Room_number",room.getRoom_number());
-                rooms_list.add(room);
 //                Toast.makeText(getApplicationContext(),"added room",Toast.LENGTH_SHORT).show();
             }
 
@@ -94,6 +98,8 @@ public class ManageRoomsActivity extends AppCompatActivity {
         adapter=new FirebaseRecyclerAdapter<RoomModel, ManageRoomViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ManageRoomViewHolder vh, int position, @NonNull RoomModel model) {
+
+
                 vh.populateManageRoomRow(model.getRoom_number(),
                         model.getRoom_price(),
                         model.isRoom_available());
@@ -103,19 +109,42 @@ public class ManageRoomsActivity extends AppCompatActivity {
             @NonNull
             @Override
             public ManageRoomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.itemview_manage_room,parent,false);
+                final View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.itemview_manage_room,parent,false);
+                //attach a click event listener on the manage button
+                Button button_manage=view.findViewById(R.id.button_manage_room);
+                button_manage.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        //launch the 'manage single room' activity
+                        Intent in=new Intent(getApplicationContext(),ManageSingleRoomActivity.class);
+
+                        String room_number=((TextView)view.findViewById(R.id.textview_room_number)).getText().toString();
+                        String available_str=((TextView)view.findViewById(R.id.textview_room_available)).getText().toString();
+                        int room_price=Integer.parseInt(((TextView)view.findViewById(R.id.textview_room_price)).getText().toString());
+
+                        boolean available;
+                        if(available_str.equalsIgnoreCase("yes")){
+                            available=true;
+                        }else
+                            available=false;
+
+                        in.putExtra(ROOM_NUMBER,room_number);
+                        in.putExtra(ROOM_PRICE,room_price);
+                        in.putExtra(AVAILABLE,available);
+                        startActivity(in);
+                    }
+                });
+
                 return new ManageRoomViewHolder(view);
             }
-
-            @Override
-            public int getItemCount() {
-                return rooms_list.size();
-            }
+//            @Override
+//            public int getItemCount() {
+//                return rooms_list.size();
+//            }
         };
 
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
-//        rv.setAdapter(adapter);
-//        rv.setLayoutManager(new LinearLayoutManager(this));
+
     }
 }
