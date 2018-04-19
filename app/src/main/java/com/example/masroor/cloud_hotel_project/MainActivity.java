@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -12,8 +13,16 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     Button button;
 
+    //for saving the user's uid in the Users node in db
+    DatabaseReference dbRef_Users;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
         button=findViewById(R.id.button);
         firebaseAuth=FirebaseAuth.getInstance();
+
+        dbRef_Users= FirebaseDatabase.getInstance().getReference(DbReferencesStrings.USERS_ROOT);
+
 
         authStateListener=new FirebaseAuth.AuthStateListener(){
             @Override
@@ -77,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
         //admin's
         //or
         //user's activity
+
+
+
         if(firebaseUser.getUid().equals("277zxpzpF0YyHtILZbS9EhFnJaO2")){
             Toast.makeText(this,"Attempting to launch admin activity!",Toast.LENGTH_SHORT).show();
 
@@ -87,8 +105,50 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else{
-            //launch simple user activity
+            // check if this user is stored in db
+            // if not, store it
+            // and launch user main activity
+            // launch simple user activity
+            ValueEventListener vel=new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.exists()){
+                        //means this user's user_uid does not exist in Users node of db
+                        //so
+                        //add this user to db at path
+                        // -Users
+                        //      -user_uid
+                        String current_user_name=firebaseUser.getDisplayName();
+                        String current_user_uid=firebaseUser.getUid();
+
+                        Log.i("user name:",current_user_name);
+
+                        HashMap<String,Object> user_details=new HashMap<>();
+                        user_details.put(DbReferencesStrings.USER_UID,current_user_uid);
+                        user_details.put(DbReferencesStrings.USER_NAME,current_user_name);
+
+                        dbRef_Users.child(current_user_uid).setValue(user_details);
+                        Log.i("user uid in main:",current_user_uid);
+                        Toast.makeText(getApplicationContext(),
+                                "Successfully added user details to db.",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            dbRef_Users.addListenerForSingleValueEvent(vel);
+
+            //now launch user main activity
             Toast.makeText(this,"Attempting to launch simple user activity!",Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(this,UserMainActivity.class);
+            intent.putExtra(DbReferencesStrings.USER_UID,firebaseUser.getUid());
+            intent.putExtra(DbReferencesStrings.USER_NAME,firebaseUser.getDisplayName());
+            startActivity(intent);
+
+
         }
     }
 }

@@ -18,4 +18,9 @@
     <string name="room_capacity">Room Capacity</string>
     <string name="update_room_details">Update Room Details</string>
     <string name="delete_room">Delete Room</string>
+    <string name="username">Username</string>
+    <string name="update_profile_picture">Update Profile Picture</string>
+    <string name="book_a_room">Book A Room</string>
+    <string name="write_a_review">Write A Review</string>
+    <string name="logout">Logout</string>
 </resources>

@@ -24,6 +24,7 @@
             android:label="Add New Room" />
         <activity android:name=".ManageRoomsActivity" />
         <activity android:name=".ManageSingleRoomActivity" />
+        <activity android:name=".UserMainActivity"></activity>
     </application>
 
 </manifest>
