@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -31,6 +33,7 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
     Button btnUpdateProfilePicture,btnBookARoom,btnWriteAReview,btnLogout;
     Uri profile_picture_uri;
 
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +47,20 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         btnWriteAReview=findViewById(R.id.button_write_review);
         btnLogout=findViewById(R.id.button_logout);
 
+        Intent i=getIntent();
+        Bundle bundle=i.getExtras();
+        assert bundle != null;
+        current_user_uid=bundle.getString(DbReferencesStrings.USER_UID);
+        current_user_name=bundle.getString(DbReferencesStrings.USER_NAME);
+        textViewUsername.setText(current_user_name);
+
+        firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+
         btnUpdateProfilePicture.setOnClickListener(this);
         btnBookARoom.setOnClickListener(this);
         btnWriteAReview.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
 
-        Intent i=getIntent();
-        Bundle bundle=i.getExtras();
-        assert bundle != null;
-        current_user_uid=bundle.getString(DbReferencesStrings.USER_UID);
-        Log.i("Current user uid:",current_user_uid);
-        current_user_name=bundle.getString(DbReferencesStrings.USER_NAME);
     }
 
     @Override
@@ -75,6 +81,8 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
             }break;
 
             case R.id.button_write_review:{
+                Intent intent=new Intent(this,UserWriteReviewActivity.class);
+                startActivity(intent);
 
             }break;
 
