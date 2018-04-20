@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
@@ -46,31 +47,45 @@ public class MainActivity extends AppCompatActivity {
 
         dbRef_Users= FirebaseDatabase.getInstance().getReference(DbReferencesStrings.USERS_ROOT);
 
+//        authStateListener=new FirebaseAuth.AuthStateListener(){
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth fbAuth) {
+//                     if(fbAuth.getCurrentUser()!=null){
+//                         //signed in
+//                         //check who is signed in admin or user
+//                         //then
+//                         //launch appropriate activity
+//                         Toast.makeText(getApplicationContext(),"Signed in!",Toast.LENGTH_SHORT).show();
+//                         firebaseUser=firebaseAuth.getCurrentUser();
+//                         launchSignedInActivity();
+//                     }else{
+//                         //not signed in
+//                         button.setOnClickListener(new View.OnClickListener(){
+//                             @Override
+//                             public void onClick(View v) {
+//                                 Toast.makeText(getApplicationContext(),"NOT SIGNED IN!",Toast.LENGTH_SHORT).show();
+//                                 launchFirebaseUIFlow();
+//                             }
+//                         });
+//
+//                     }
+//            }
+//        };
+        firebaseUser=firebaseAuth.getCurrentUser();
 
-        authStateListener=new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth fbAuth) {
-                     if(fbAuth.getCurrentUser()!=null){
-                         //signed in
-                         //check who is signed in admin or user
-                         //then
-                         //launch appropriate activity
-                         Toast.makeText(getApplicationContext(),"Signed in!",Toast.LENGTH_SHORT).show();
-                         firebaseUser=firebaseAuth.getCurrentUser();
-                         launchSignedInActivity();
-                     }else{
-                         //not signed in
-                         button.setOnClickListener(new View.OnClickListener(){
-                             @Override
-                             public void onClick(View v) {
-                                 Toast.makeText(getApplicationContext(),"NOT SIGNED IN!",Toast.LENGTH_SHORT).show();
-                                 launchFirebaseUIFlow();
-                             }
-                         });
-                     }
-            }
-        };
-        firebaseAuth.addAuthStateListener(authStateListener);
+        if(firebaseUser==null){
+            //not signed in
+            Log.i("Authentication","not signed in");
+            Log.i("Authentication","launching firebaseui");
+
+            launchFirebaseUIFlow();
+        }
+        if(firebaseUser!=null){
+            //signed in
+            launchSignedInActivity();
+        }
+
+//        firebaseAuth.addAuthStateListener(authStateListener);
 
     }
 
@@ -87,13 +102,27 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RC_FBUI){
+            if(resultCode==RESULT_OK){
+                Toast.makeText(getApplicationContext(),"Signed in!",Toast.LENGTH_SHORT).show();
+                firebaseUser=firebaseAuth.getCurrentUser();
+                launchSignedInActivity();
+            }
+            else if(resultCode==RESULT_CANCELED){
+                Log.i("Authentication","Sign in cancelled");
+            }
+
+        }
+    }
+
     public void launchSignedInActivity(){
         //decide which activity to launch
         //admin's
         //or
         //user's activity
-
-
 
         if(firebaseUser.getUid().equals("277zxpzpF0YyHtILZbS9EhFnJaO2")){
             Toast.makeText(this,"Attempting to launch admin activity!",Toast.LENGTH_SHORT).show();

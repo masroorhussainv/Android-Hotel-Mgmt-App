@@ -16,7 +16,7 @@ public class RoomModel {
     private String booked_by_uid;
     private String booked_by_name;
     private int room_capacity;
-
+    private HashMap<String,Object> picture_urls;
     public int getRoom_capacity() {
         return room_capacity;
     }
@@ -24,7 +24,6 @@ public class RoomModel {
     public void setRoom_capacity(int room_capacity) {
         this.room_capacity = room_capacity;
     }
-
 
     public RoomModel(String room_number, int price, boolean room_available,int cap, String booked_by_uid, String booked_by_name) {
         this.room_number = room_number;
@@ -36,6 +35,14 @@ public class RoomModel {
     }
 
     public RoomModel() {
+    }
+
+    public HashMap<String, Object> getPicture_urls() {
+        return picture_urls;
+    }
+
+    public void setPicture_urls(HashMap<String, Object> picture_urls) {
+        this.picture_urls = picture_urls;
     }
 
     public String getRoom_number() {

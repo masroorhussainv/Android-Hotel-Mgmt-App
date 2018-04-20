@@ -52,7 +52,7 @@ public class ManageRoomsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_rooms);
 
         rv=findViewById(R.id.recyclerView);
-        dbRef_Rooms=FirebaseDatabase.getInstance().getReference("Rooms");
+        dbRef_Rooms=FirebaseDatabase.getInstance().getReference(DbReferencesStrings.ROOMS_ROOT);
 
         roomsChildEventListener=new ChildEventListener() {
             @Override
@@ -99,10 +99,10 @@ public class ManageRoomsActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull ManageRoomViewHolder vh, int position, @NonNull RoomModel model) {
 
-
                 vh.populateManageRoomRow(model.getRoom_number(),
                         model.getRoom_price(),
                         model.isRoom_available());
+
                 Log.i("populating: ",model.getRoom_number());
             }
 
@@ -137,10 +137,6 @@ public class ManageRoomsActivity extends AppCompatActivity {
 
                 return new ManageRoomViewHolder(view);
             }
-//            @Override
-//            public int getItemCount() {
-//                return rooms_list.size();
-//            }
         };
 
         rv.setAdapter(adapter);

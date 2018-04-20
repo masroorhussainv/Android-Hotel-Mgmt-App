@@ -76,6 +76,15 @@ public class UserWriteReviewActivity extends AppCompatActivity {
         });
     }
 
+    public void logOut(){
+        FirebaseAuth.getInstance().signOut();
+        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+
     public boolean validateReview(){
         if(!TextUtils.isEmpty(editTextComments.getText())){
             reviewComment=editTextComments.getText().toString();

@@ -68,16 +68,14 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         int pressed_button_id=v.getId();
         switch (pressed_button_id){
             case R.id.button_update_profile_picture:{
+
                 Log.i(BUTTON_PRESS,"Update profile picture button pressed");
-
-                Intent pickerIntent=new Intent(Intent.ACTION_PICK);
-                pickerIntent.setType("image/*");
-                startActivityForResult(pickerIntent, PROFILE_IMAGE_PICKER_REQUEST_CODE);
-
+                launchImagePicker();
             }break;
 
             case R.id.button_book_room:{
-
+                Intent i=new Intent(this,UserBookRoom.class);
+                startActivity(i);
             }break;
 
             case R.id.button_write_review:{
@@ -87,9 +85,15 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
             }break;
 
             case R.id.button_logout:{
-
+                logOut();
             }break;
         }
+    }
+
+    public void launchImagePicker(){
+        Intent pickerIntent=new Intent(Intent.ACTION_PICK);
+        pickerIntent.setType("image/*");
+        startActivityForResult(pickerIntent, PROFILE_IMAGE_PICKER_REQUEST_CODE);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent receivedIntent) {
@@ -137,4 +141,13 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         }
 
     }
+
+    public void logOut(){
+        FirebaseAuth.getInstance().signOut();
+        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
 }

@@ -25,4 +25,6 @@
     <string name="logout">Logout</string>
     <string name="write_a_review_for_hotel">Write a Review for Hotel</string>
     <string name="submit_review">Submit Review</string>
+    <string name="book_it">Book It</string>
+    <string name="write_your_comments">Write your comments</string>
 </resources>
