@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 
+import java.util.HashMap;
+import java.util.Map;
 
 import models.RoomModel;
 import viewholders.ManageRoomViewHolder;
@@ -99,13 +101,29 @@ public class ManageRoomsActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull ManageRoomViewHolder vh, int position, @NonNull RoomModel model) {
 
-                vh.populateManageRoomRow(model.getRoom_number(),
-                        model.getRoom_price(),
-                        model.isRoom_available());
+
+                //put data into viewholder object
+
+                HashMap<String, Object> map = model.getPicture_urls();
+                String url=null;
+                for (Map.Entry<String, Object> entry : map.entrySet())
+                {
+                    url=(String)entry.getValue();
+                    break;
+                }
+
+                if(url!=null) {
+                    vh.populateManageRoomRow(
+                            url,
+                            model.getRoom_number(),
+                            model.getRoom_price(),
+                            model.getRoom_capacity(),
+                            model.isRoom_available()
+                    );
+                }
 
                 Log.i("populating: ",model.getRoom_number());
             }
-
             @NonNull
             @Override
             public ManageRoomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -141,6 +159,5 @@ public class ManageRoomsActivity extends AppCompatActivity {
 
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
-
     }
 }

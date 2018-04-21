@@ -119,11 +119,10 @@ public class AddNewRoomActivity extends AppCompatActivity {
         String roomNumber = editText_room_num.getText().toString();
         int roomPrice = Integer.parseInt(editText_room_price.getText().toString());
         int roomCapacity=Integer.parseInt(editText_room_capacity.getText().toString());
-
-
-        String current_user_id=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String current_user_name=FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        RoomModel room=new RoomModel(roomNumber,roomPrice,true,roomCapacity,current_user_id,current_user_name);
+//
+//        String current_user_id=FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        String current_user_name=FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        RoomModel room=new RoomModel(roomNumber,roomPrice,true,roomCapacity,null,null);
 
         dbRef_Rooms=firebaseDatabase.getReference("Rooms");
         dbRef_Rooms.child(roomNumber).setValue(room);

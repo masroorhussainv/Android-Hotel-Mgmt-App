@@ -7,4 +7,5 @@
     <color name="buttonTextColor">#fff</color>
     <color name="critical">#ae0c0c</color>
     <color name="elevated">#047b28</color>
+    <color name="yellow">#ccd207</color>
 </resources>

@@ -15,11 +15,16 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class UserMainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -34,7 +39,7 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
     Uri profile_picture_uri;
 
     FirebaseUser firebaseUser;
-
+    DatabaseReference dbRef_profile_picture;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +57,46 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         assert bundle != null;
         current_user_uid=bundle.getString(DbReferencesStrings.USER_UID);
         current_user_name=bundle.getString(DbReferencesStrings.USER_NAME);
-        textViewUsername.setText(current_user_name);
 
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        dbRef_profile_picture=FirebaseDatabase.getInstance().getReference()
+                .child(DbReferencesStrings.USERS_ROOT)
+                .child(current_user_uid)
+                .child(DbReferencesStrings.USER_PROFILE_PICTURE_URL);
+
 
         btnUpdateProfilePicture.setOnClickListener(this);
         btnBookARoom.setOnClickListener(this);
         btnWriteAReview.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
+
+        dbRef_profile_picture.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String url=dataSnapshot.child(DbReferencesStrings.USER_PROFILE_PICTURE_URL).getValue(String.class);
+
+                String url=dataSnapshot.getValue(String.class);
+                if(url!=null){
+                    Picasso.get().load(url).into(imageViewProfilePicture);
+                }
+                else{
+                    //set a default placeholder image for profile_picture
+                    Picasso.get().load(R.drawable.ic_account_black_48dp);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        textViewUsername.setText(current_user_name);
 
     }
 
@@ -68,7 +105,6 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         int pressed_button_id=v.getId();
         switch (pressed_button_id){
             case R.id.button_update_profile_picture:{
-
                 Log.i(BUTTON_PRESS,"Update profile picture button pressed");
                 launchImagePicker();
             }break;
@@ -99,15 +135,13 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent receivedIntent) {
         super.onActivityResult(requestCode, resultCode, receivedIntent);
 
-        switch (requestCode){
-            case PROFILE_IMAGE_PICKER_REQUEST_CODE:{
-                if(resultCode== Activity.RESULT_OK){
+        switch (requestCode) {
+            case PROFILE_IMAGE_PICKER_REQUEST_CODE: {
+                if (resultCode == Activity.RESULT_OK) {
                     //get image uri
-                    profile_picture_uri=receivedIntent.getData();
-                }
-
+                    profile_picture_uri = receivedIntent.getData();
                 //upload the profile picture to storage and push its url to profile_picture_url
-                StorageReference user_profile_pictures_storage=FirebaseStorage.getInstance()
+                StorageReference user_profile_pictures_storage = FirebaseStorage.getInstance()
                         .getReference(DbReferencesStrings.STORAGE_USER_PROFILE_PICTURES);
 
                 user_profile_pictures_storage.putFile(profile_picture_uri)
@@ -119,12 +153,12 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
                                         "Uploaded profile picture to storage", Toast.LENGTH_SHORT).show();
 
                                 //get its download url
-                                String profile_picture_url=taskSnapshot.getDownloadUrl().toString();
+                                String profile_picture_url = taskSnapshot.getDownloadUrl().toString();
                                 DatabaseReference dbRef_profile_picture;
-                                dbRef_profile_picture= FirebaseDatabase.getInstance().getReference()
+                                dbRef_profile_picture = FirebaseDatabase.getInstance().getReference()
                                         .child(DbReferencesStrings.USERS_ROOT)
                                         .child(current_user_uid).child(DbReferencesStrings.USER_PROFILE_PICTURE_URL);
-                                Log.i("Current user uid:",current_user_uid);
+                                Log.i("Current user uid:", current_user_uid);
                                 //push the url to db
                                 dbRef_profile_picture.setValue(profile_picture_url)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -136,6 +170,7 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
                                         });
                             }
                         });
+                 }
             }
             break;
         }

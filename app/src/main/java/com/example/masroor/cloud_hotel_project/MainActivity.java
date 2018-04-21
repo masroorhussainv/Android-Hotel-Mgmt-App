@@ -2,6 +2,7 @@ package com.example.masroor.cloud_hotel_project;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
 //                     }
 //            }
 //        };
+
+//        firebaseAuth.addAuthStateListener(authStateListener);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         firebaseUser=firebaseAuth.getCurrentUser();
 
         if(firebaseUser==null){
@@ -84,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
             //signed in
             launchSignedInActivity();
         }
-
-//        firebaseAuth.addAuthStateListener(authStateListener);
-
     }
 
     public void launchFirebaseUIFlow(){
@@ -131,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
-
         }
         else{
             // check if this user is stored in db
@@ -175,9 +180,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent=new Intent(this,UserMainActivity.class);
             intent.putExtra(DbReferencesStrings.USER_UID,firebaseUser.getUid());
             intent.putExtra(DbReferencesStrings.USER_NAME,firebaseUser.getDisplayName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-
-
+            finish();
         }
     }
 }
