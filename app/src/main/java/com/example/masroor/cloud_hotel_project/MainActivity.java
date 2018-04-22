@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     Button button;
 
+
     //for saving the user's uid in the Users node in db
     DatabaseReference dbRef_Users;
 
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         button=findViewById(R.id.button);
+
+
+//        Picasso.get().load(R.drawable.logo).into(image_logo);
+
         firebaseAuth=FirebaseAuth.getInstance();
 
         dbRef_Users= FirebaseDatabase.getInstance().getReference(DbReferencesStrings.USERS_ROOT);
@@ -86,7 +93,12 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Authentication","not signed in");
             Log.i("Authentication","launching firebaseui");
 
-            launchFirebaseUIFlow();
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchFirebaseUIFlow();
+                }
+            });
         }
         if(firebaseUser!=null){
             //signed in

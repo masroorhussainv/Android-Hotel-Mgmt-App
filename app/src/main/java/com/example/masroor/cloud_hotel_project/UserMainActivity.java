@@ -52,6 +52,8 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         btnWriteAReview=findViewById(R.id.button_write_review);
         btnLogout=findViewById(R.id.button_logout);
 
+        Picasso.get().load(R.drawable.ic_account_black_48dp).into(imageViewProfilePicture);
+
         Intent i=getIntent();
         Bundle bundle=i.getExtras();
         assert bundle != null;

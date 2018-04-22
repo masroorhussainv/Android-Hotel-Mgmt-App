@@ -36,6 +36,7 @@ public class AddNewRoomActivity extends AppCompatActivity {
     EditText editText_room_num,editText_room_price,editText_room_capacity;
     Button btn_add_room;
     Uri imageUri;
+    boolean uri_updated;
 
     private String uploaded_image_URL;
 
@@ -60,6 +61,8 @@ public class AddNewRoomActivity extends AppCompatActivity {
         firebaseStorage=FirebaseStorage.getInstance();
         storageRef_RoomPictures=firebaseStorage.getReference("room_pictures");
         firebaseDatabase=FirebaseDatabase.getInstance();
+
+       Picasso.get().load(R.drawable.image_plus).into(imageView);
 
         //image picker code
         imageView.setOnClickListener(new View.OnClickListener(){
@@ -103,10 +106,11 @@ public class AddNewRoomActivity extends AppCompatActivity {
         }else{
             editText_room_price.setError(null);
         }
-        if(imageUri==null){
+        if(!uri_updated){
             Toast.makeText(this,"Please choose an image for New Room!",Toast.LENGTH_SHORT).show();
             return false;
         }
+        uri_updated=true;
         return true;
     }
 
@@ -120,9 +124,7 @@ public class AddNewRoomActivity extends AppCompatActivity {
         String roomNumber = editText_room_num.getText().toString();
         int roomPrice = Integer.parseInt(editText_room_price.getText().toString());
         int roomCapacity=Integer.parseInt(editText_room_capacity.getText().toString());
-//
-//        String current_user_id=FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        String current_user_name=FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+
         RoomModel room=new RoomModel(roomNumber,roomPrice,true,roomCapacity,null,null);
 
         dbRef_Rooms=firebaseDatabase.getReference("Rooms");

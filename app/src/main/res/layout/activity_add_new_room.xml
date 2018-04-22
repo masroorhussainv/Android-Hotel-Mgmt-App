@@ -16,7 +16,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/click_to_add_room_picture"
-        android:scaleType="center"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"

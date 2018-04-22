@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -52,21 +53,14 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
 
         firebaseDatabase=FirebaseDatabase.getInstance();
         dbRef_root=firebaseDatabase.getReference();
-//        dbRef_price=firebaseDatabase.getReference(DbReferencesStrings.ROOMS_ROOT+"/"+
-//                DbReferencesStrings.ROOM_NUMBER+"/"+
-//                DbReferencesStrings.ROOM_PRICE);
-//        dbRef_capacity=firebaseDatabase.getReference(DbReferencesStrings.ROOMS_ROOT+"/"+
-//                DbReferencesStrings.ROOM_NUMBER+"/"+
-//                DbReferencesStrings.ROOM_CAPACITY);
-//        dbRef_availability=firebaseDatabase.getReference(DbReferencesStrings.ROOMS_ROOT+"/"+
-//                DbReferencesStrings.ROOM_NUMBER+"/"+
-//                DbReferencesStrings.ROOM_AVAILABLE);
 
         Intent intent=getIntent();
         Bundle bundle=intent.getExtras();
         room_number=(String)bundle.get(ManageRoomsActivity.ROOM_NUMBER);
         current_availability_status=(boolean)bundle.get(ManageRoomsActivity.AVAILABLE);
 
+
+        // listener for button 'update room details'
         button_update_room_details.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -81,15 +75,7 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
                             .child(DbReferencesStrings.ROOMS_ROOT)
                             .child(room_number)
                             .child(DbReferencesStrings.ROOM_CAPACITY);
-
-                    dbRef_capacity.setValue(updated_capacity).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(getApplicationContext(),"Capacity updated",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    updateRoomCapacity();
                 }
                 if(update_price){
                     //means we've to update room's price
@@ -97,40 +83,76 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
                             .child(DbReferencesStrings.ROOMS_ROOT)
                             .child(room_number)
                             .child(DbReferencesStrings.ROOM_PRICE);
-
-                    dbRef_price.setValue(updated_price).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(getApplicationContext(),"Price updated",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    updateRoomPrice();
                 }
                 if(update_availability){
                     //means we're to update availability status
-//
                     dbRef_availability=firebaseDatabase.getReference()
                             .child(DbReferencesStrings.ROOMS_ROOT)
                             .child(room_number)
                             .child(DbReferencesStrings.ROOM_AVAILABLE);
+                    updateRoomAvailability();
+                }
+            }
+        });
 
-                    dbRef_availability.setValue(!current_availability_status).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        //listener for 'Delete Room' button
+        button_delete_room.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbRef_root
+                    .child(DbReferencesStrings.ROOMS_ROOT)
+                    .child(room_number)
+                    .removeValue()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-
-                                //change current status of availability
-                                current_availability_status=!current_availability_status;
-                                Toast.makeText(getApplicationContext(),"Availability updated",Toast.LENGTH_SHORT).show();
-                            }
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(),"Room deleted successfully!",Toast.LENGTH_SHORT)
+                                    .show();
+                            finish();
                         }
                     });
+            }
+        });
+    }
+
+
+    public void updateRoomCapacity(){
+        dbRef_capacity.setValue(updated_capacity).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Capacity updated",Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
+    public void updateRoomPrice(){
+        dbRef_price.setValue(updated_price).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Price updated",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void updateRoomAvailability(){
+        dbRef_availability.setValue(!current_availability_status).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+
+                    //change current status of availability
+                    current_availability_status=!current_availability_status;
+                    Toast.makeText(getApplicationContext(),"Availability updated",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
     public void validateInput(){
         if(TextUtils.isEmpty(editText_room_capacity.getText())){
