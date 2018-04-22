@@ -23,7 +23,7 @@ public class DbReferencesStrings {
     public static String REVIEW_COMMENT="comment";
 
     //Room Bookings
-    public static String ROOM_BOOKINGS_ROOT="Reviews";
+    public static String ROOM_BOOKINGS_ROOT="Bookings";
 
     //FirebaseStorage References
     public static String STORAGE_USER_PROFILE_PICTURES="user_profile_pictures";
