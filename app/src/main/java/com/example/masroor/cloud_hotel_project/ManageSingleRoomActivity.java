@@ -26,7 +26,7 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
     EditText editText_room_price,editText_room_capacity;
     RadioGroup radioGroup;
     RadioButton radioButton_yes,radioButton_no;
-    Button button_update_room_details,button_delete_room,button_manage_pictures;
+    Button button_update_room_details,button_delete_room;
 
     boolean current_availability_status,update_price,update_capacity,update_availability;
     String room_number;
@@ -49,8 +49,6 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
         radioButton_no=findViewById(R.id.radiobutton_no);
         button_update_room_details=findViewById(R.id.button_update_room_details);
         button_delete_room=findViewById(R.id.button_delete_room);
-        button_manage_pictures=findViewById(R.id.button_manage_picture);
-
 
         firebaseDatabase=FirebaseDatabase.getInstance();
         dbRef_root=firebaseDatabase.getReference();
@@ -84,15 +82,6 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
                             .child(room_number)
                             .child(DbReferencesStrings.ROOM_CAPACITY);
 
-//                    HashMap<String,Object> capacity_map=new HashMap<>();
-//                    capacity_map.put("/"+
-//                            DbReferencesStrings.ROOMS_ROOT+"/"+
-//                                room_number+"/"+
-//                                DbReferencesStrings.ROOM_CAPACITY
-//                            ,updated_capacity);
-//
-//                    logIt(DB_REF_DEBUG_TAG,capacity_map.keySet().toString());
-
                     dbRef_capacity.setValue(updated_capacity).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -108,16 +97,6 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
                             .child(DbReferencesStrings.ROOMS_ROOT)
                             .child(room_number)
                             .child(DbReferencesStrings.ROOM_PRICE);
-
-//                    HashMap<String,Object> price_map=new HashMap<>();
-//                    price_map.put(
-//                        "/"+
-//                        DbReferencesStrings.ROOMS_ROOT+"/"+
-//                                room_number+"/"+
-//                                DbReferencesStrings.ROOM_PRICE
-//                        ,updated_price);
-//
-//                    logIt(DB_REF_DEBUG_TAG,price_map.keySet().toString());
 
                     dbRef_price.setValue(updated_price).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -136,16 +115,6 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
                             .child(room_number)
                             .child(DbReferencesStrings.ROOM_AVAILABLE);
 
-//                    HashMap<String,Object> availability_map=new HashMap<>();
-//                    availability_map.put(
-//                        "/"+
-//                            DbReferencesStrings.ROOMS_ROOT+"/"+
-//                            room_number+"/"+
-//                            DbReferencesStrings.ROOM_AVAILABLE
-//                        ,!current_availability_status);
-//
-//                    logIt(DB_REF_DEBUG_TAG,availability_map.keySet().toString());
-
                     dbRef_availability.setValue(!current_availability_status).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -160,10 +129,6 @@ public class ManageSingleRoomActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public void logIt(String tag,String obj){
-        Log.i(tag,obj);
     }
 
 

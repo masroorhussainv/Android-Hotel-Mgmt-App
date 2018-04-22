@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -142,18 +143,19 @@ public class AddNewRoomActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(getApplicationContext(),"Image Upload successful!",Toast.LENGTH_SHORT)
+                        Toast.makeText(getApplicationContext(),"Image Upload successful!",Toast.LENGTH_LONG)
                                 .show();
                         uploaded_image_URL=taskSnapshot.getDownloadUrl().toString();
-                        Toast.makeText(getApplicationContext(),uploaded_image_URL,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),uploaded_image_URL,Toast.LENGTH_SHORT).show();
                         uploadRoomData();
+                        finish();
                     }
                 })
                 //adding failure listener
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"Image Upload failed!",Toast.LENGTH_SHORT)
+                        Toast.makeText(getApplicationContext(),"Image Upload failed!",Toast.LENGTH_LONG)
                                 .show();
                     }
                 });
@@ -168,10 +170,10 @@ public class AddNewRoomActivity extends AppCompatActivity {
                 if(resultCode==Activity.RESULT_OK){
                     //get image uri
                     imageUri=receivedIntent.getData();
+                    Picasso.get().load(imageUri).into(imageView);
                 }
             }
             break;
         }
-
     }
 }

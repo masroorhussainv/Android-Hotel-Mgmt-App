@@ -30,4 +30,9 @@
     <string name="rating">Rating</string>
     <string name="comment">comment</string>
     <string name="delete_comment">Delete Comment</string>
+
+    <string name="facebook_application_id">2105879656106971</string>
+    <string name="facebook_app_id">2105879656106971</string>
+    <string name="fb_login_protocol_scheme">fb2105879656106971</string>
+
 </resources>

@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminMainActivity extends AppCompatActivity {
 
-    Button btn_add_room,btn_manage_rooms,btn_manage_users,btn_manage_reviews,btn_logout;
+    Button btn_add_room,btn_manage_rooms,btn_manage_reviews,btn_logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +38,6 @@ public class AdminMainActivity extends AppCompatActivity {
                 //launch manage rooms activity
                 Intent intent=new Intent(getApplicationContext(),ManageRoomsActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        btn_manage_users.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //launch manage_users activity
             }
         });
 
@@ -77,7 +70,6 @@ public class AdminMainActivity extends AppCompatActivity {
     public void initializeButtonViews(){
         btn_add_room=findViewById(R.id.button_add_room);
         btn_manage_rooms=findViewById(R.id.button_manage_rooms);
-        btn_manage_users=findViewById(R.id.button_manage_users);
         btn_manage_reviews=findViewById(R.id.button_manage_reviews);
         btn_logout=findViewById(R.id.button_logout);
     }

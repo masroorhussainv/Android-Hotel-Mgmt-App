@@ -65,7 +65,8 @@ public class UserWriteReviewActivity extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getApplicationContext(),"Review Added!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Review Added Successfully!", Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
                             });
                 }
