@@ -51,7 +51,9 @@ public class AdminMainActivity extends AppCompatActivity {
         btn_manage_reviews.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //launch manage_reviews ativity
+                //launch manage_reviews activity
+                Intent intent=new Intent(getApplicationContext(),AdminManageReviews.class);
+                startActivity(intent);
             }
         });
 

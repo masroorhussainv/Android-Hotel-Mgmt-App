@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.masroor.cloud_hotel_project">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +16,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,6 +31,7 @@
         <activity android:name=".UserMainActivity" />
         <activity android:name=".UserWriteReviewActivity" />
         <activity android:name=".UserBookRoom" />
+        <activity android:name=".AdminManageReviews"></activity>
     </application>
 
 </manifest>

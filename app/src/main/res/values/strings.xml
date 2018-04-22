@@ -27,4 +27,7 @@
     <string name="submit_review">Submit Review</string>
     <string name="book_it">Book It</string>
     <string name="write_your_comments">Write your comments</string>
+    <string name="rating">Rating</string>
+    <string name="comment">comment</string>
+    <string name="delete_comment">Delete Comment</string>
 </resources>

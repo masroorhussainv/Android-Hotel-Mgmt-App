@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     final int RC_FBUI=1;
 
     FirebaseAuth firebaseAuth;
-    FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser firebaseUser;
     Button button;
 
