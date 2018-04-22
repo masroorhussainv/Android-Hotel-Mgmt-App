@@ -144,7 +144,7 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
                 StorageReference user_profile_pictures_storage = FirebaseStorage.getInstance()
                         .getReference(DbReferencesStrings.STORAGE_USER_PROFILE_PICTURES);
 
-                user_profile_pictures_storage.putFile(profile_picture_uri)
+                user_profile_pictures_storage.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).putFile(profile_picture_uri)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
