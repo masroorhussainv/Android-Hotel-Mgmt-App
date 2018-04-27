@@ -52,11 +52,7 @@ public class AddNewRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_room);
 
-        imageView=findViewById(R.id.imageView);
-        editText_room_num=findViewById(R.id.editText_room_num);
-        editText_room_price=findViewById(R.id.editText_room_price);
-        editText_room_capacity=findViewById(R.id.editText_room_capacity);
-        btn_add_room=findViewById(R.id.button_add_room);
+        referViewElements();
 
         firebaseStorage=FirebaseStorage.getInstance();
         storageRef_RoomPictures=firebaseStorage.getReference("room_pictures");
@@ -86,6 +82,15 @@ public class AddNewRoomActivity extends AppCompatActivity {
             }
         });
     }
+
+    public  void referViewElements(){
+        imageView=findViewById(R.id.imageView);
+        editText_room_num=findViewById(R.id.editText_room_num);
+        editText_room_price=findViewById(R.id.editText_room_price);
+        editText_room_capacity=findViewById(R.id.editText_room_capacity);
+        btn_add_room=findViewById(R.id.button_add_room);
+    }
+
 
     public boolean validateInput(){
         if(TextUtils.isEmpty(editText_room_num.getText())){
@@ -173,6 +178,7 @@ public class AddNewRoomActivity extends AppCompatActivity {
                     //get image uri
                     imageUri=receivedIntent.getData();
                     Picasso.get().load(imageUri).into(imageView);
+                    uri_updated=true;
                 }
             }
             break;
