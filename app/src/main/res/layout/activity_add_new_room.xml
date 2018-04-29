@@ -17,7 +17,7 @@
         android:layout_marginTop="8dp"
         android:contentDescription="@string/click_to_add_room_picture"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/image_plus"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,18 +1,26 @@
 package com.example.masroor.cloud_hotel_project;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -40,17 +48,17 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
 
     FirebaseUser firebaseUser;
     DatabaseReference dbRef_profile_picture;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
 
-        imageViewProfilePicture=findViewById(R.id.imageview_profile_picture);
-        textViewUsername=findViewById(R.id.textview_username);
-        btnUpdateProfilePicture=findViewById(R.id.button_update_profile_picture);
-        btnBookARoom=findViewById(R.id.button_book_room);
-        btnWriteAReview=findViewById(R.id.button_write_review);
-        btnLogout=findViewById(R.id.button_logout);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        referViewElements();
 
         Picasso.get().load(R.drawable.ic_account_black_48dp).into(imageViewProfilePicture);
 
@@ -93,6 +101,15 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+    }
+
+    private void referViewElements() {
+        imageViewProfilePicture=findViewById(R.id.imageview_profile_picture);
+        textViewUsername=findViewById(R.id.textview_username);
+        btnUpdateProfilePicture=findViewById(R.id.button_update_profile_picture);
+        btnBookARoom=findViewById(R.id.button_book_room);
+        btnWriteAReview=findViewById(R.id.button_write_review);
+        btnLogout=findViewById(R.id.button_logout);
     }
 
     @Override
@@ -185,6 +202,71 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user_options_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.delete_account:{
+                initiateDeletionDialog();
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void deleteUserAccount() {
+        FirebaseUser current_user=FirebaseAuth.getInstance().getCurrentUser();
+        assert current_user != null;
+        current_user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(),"Account deleted successfully.",Toast.LENGTH_LONG).show();
+                            launchFirstActivityAndClearStack();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Account deletion unsuccessful.Exception: "+task.getException(),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    private void launchFirstActivityAndClearStack() {
+        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    private void initiateDeletionDialog() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int choice) {
+                switch (choice) {
+                    case DialogInterface.BUTTON_POSITIVE:{
+                        deleteUserAccount();
+                    }
+                    break;
+                    case DialogInterface.BUTTON_NEGATIVE:{
+                        //do nothing
+                    }
+                }
+            }
+        };
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setMessage("Do you really want to delete your account?")
+                .setPositiveButton("Yes",dialogClickListener)
+                .setNegativeButton("No",dialogClickListener)
+                .show();
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.masroor.cloud_hotel_project;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -40,9 +41,10 @@ public class UserWriteReviewActivity extends AppCompatActivity {
         current_user_name= Objects.requireNonNull(
                 FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
 
-        ratingBar=findViewById(R.id.ratingBar);
-        editTextComments=findViewById(R.id.editText_comments);
-        btnSubmitReview=findViewById(R.id.button_submit_review);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        referViewElements();
 
         dbRef_reviews= FirebaseDatabase.getInstance().getReference().child(DbReferencesStrings.REVIEWS_ROOT);
 
@@ -75,6 +77,12 @@ public class UserWriteReviewActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void referViewElements() {
+        ratingBar=findViewById(R.id.ratingBar);
+        editTextComments=findViewById(R.id.editText_comments);
+        btnSubmitReview=findViewById(R.id.button_submit_review);
     }
 
     public void logOut(){
